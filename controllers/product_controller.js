@@ -192,3 +192,45 @@ export const deleteProduct = async (req, res) => {
     });
   }
 };
+
+export const updateProductQuantity = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { quantity } = req.body; // new quantity value
+  
+      if (quantity === undefined) {
+        return res.status(400).json({
+          status: false,
+          message: "Quantity is required",
+        });
+      }
+  
+      const { data, error } = await supabase
+        .from("products")
+        .update({ quantity })
+        .eq("id", id)
+        .select();
+  
+      if (error || !data.length) {
+        return res.status(400).json({
+          status: false,
+          message: "Error updating quantity",
+          error,
+        });
+      }
+  
+      return res.status(200).json({
+        status: true,
+        message: "Quantity updated successfully",
+        product: data[0],
+      });
+    } catch (error) {
+      console.error("Error updating quantity ", error);
+      return res.status(500).json({
+        status: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  };
+  
