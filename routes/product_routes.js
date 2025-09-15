@@ -5,6 +5,7 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
+  updateProductQuantity
 } from "../controllers/product_controller.js";
 import upload from "../middlewares/upload.js";
 
@@ -15,5 +16,7 @@ router.get("/products", listProducts);
 router.get("/products/:id", getProductById);
 router.put("/products/:id", updateProduct);
 router.delete("/products/:id", deleteProduct);
+
+router.patch("/:id/quantity", updateProductQuantity);
 
 export default router;
